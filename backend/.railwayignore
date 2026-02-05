@@ -1,0 +1,11 @@
+# Railway ignore
+target/
+.mvn/wrapper/maven-wrapper.jar
+.idea/
+*.iml
+.DS_Store
+tokens/
+src/main/resources/oauth_credentials.json
+src/main/resources/credentials.json
+set_railway_env.ps1
+.env.railway
