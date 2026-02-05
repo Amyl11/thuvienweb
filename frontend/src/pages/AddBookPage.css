@@ -258,12 +258,12 @@
 }
 
 .message {
-  padding: 8px 12px;
+  padding: 8px 16px;
   border-radius: 6px;
   font-size: 14px;
   font-weight: 500;
-  max-width: 400px;
-  margin: 0 auto;
+  max-width: 320px;
+  margin: 10px auto;
   text-align: center;
 }
 
@@ -277,6 +277,8 @@
   background: #7f1d1d;
   color: #fca5a5;
   border: 1px solid #991b1b;
+  min-height: auto;
+  height: auto;
 }
 
 .form-actions {
