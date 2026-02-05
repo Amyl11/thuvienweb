@@ -1,0 +1,153 @@
+.read-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #0f0f0f;
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+}
+
+.read-header {
+  background: #1a1a1a;
+  border-bottom: 1px solid #2a2a2a;
+  padding: 15px 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+}
+
+.read-header.visible {
+  transform: translateY(0);
+}
+
+.read-header.hidden {
+  transform: translateY(-100%);
+}
+
+.mouse-catcher {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  z-index: 999;
+  pointer-events: auto;
+}
+
+.btn-back-reader {
+  background: transparent;
+  color: #e5e7eb;
+  border: 1px solid #374151;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-back-reader:hover {
+  background: #2a2a2a;
+  border-color: #3b82f6;
+}
+
+.book-title-reader {
+  flex: 1;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.page-info {
+  font-size: 14px;
+  color: #e5e7eb;
+  font-weight: 500;
+  padding: 8px 16px;
+  background: rgba(102, 126, 234, 0.15);
+  border-radius: 6px;
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  white-space: nowrap;
+}
+
+.reader-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-download-reader {
+  background: transparent;
+  color: #e5e7eb;
+  border: 1px solid #374151;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-download-reader:hover {
+  background: #2a2a2a;
+  border-color: #3b82f6;
+}
+
+.pdf-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #2a2a2a;
+  z-index: 1;
+}
+
+.pdf-viewer {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.loading, .error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 18px;
+  color: #9ca3af;
+}
+
+.error {
+  color: #ef4444;
+}
+
+@media (max-width: 768px) {
+  .read-header {
+    padding: 12px 15px;
+  }
+
+  .book-title-reader {
+    font-size: 16px;
+  }
+
+  .btn-back-reader {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}

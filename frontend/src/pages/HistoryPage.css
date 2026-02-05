@@ -1,0 +1,145 @@
+.history-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  padding: 40px 0;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 50px;
+  padding: 30px 0;
+  border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+  position: relative;
+}
+
+.page-title {
+  font-size: 48px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.page-subtitle {
+  font-size: 18px;
+  color: #9ca3af;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.btn-clear-history {
+  background: transparent;
+  color: #ef4444;
+  border: 2px solid #ef4444;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 15px;
+}
+
+.btn-clear-history:hover {
+  background: #ef4444;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+}
+
+.empty-history {
+  text-align: center;
+  padding: 80px 20px;
+  color: #9ca3af;
+}
+
+.empty-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  opacity: 0.3;
+}
+
+.empty-history h2 {
+  font-size: 28px;
+  color: #e5e7eb;
+  margin-bottom: 10px;
+}
+
+.empty-history p {
+  font-size: 16px;
+  color: #9ca3af;
+}
+
+.history-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 30px;
+  padding: 20px 0;
+}
+
+.history-item-wrapper {
+  position: relative;
+}
+
+.history-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: rgba(26, 26, 26, 0.6);
+  border-radius: 6px;
+  border: 1px solid rgba(55, 65, 81, 0.5);
+}
+
+.history-time {
+  font-size: 11px;
+  color: #9ca3af;
+  flex: 1;
+}
+
+.btn-remove-item {
+  background: transparent;
+  color: #9ca3af;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.btn-remove-item:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 32px;
+  }
+
+  .page-subtitle {
+    font-size: 16px;
+  }
+
+  .history-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 20px;
+  }
+
+  .btn-clear-history {
+    font-size: 13px;
+    padding: 8px 18px;
+  }
+}

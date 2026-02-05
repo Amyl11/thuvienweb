@@ -1,0 +1,141 @@
+.book-card {
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+}
+
+.book-cover {
+  position: relative;
+  width: 100%;
+  padding-top: 140%;
+  overflow: hidden;
+  background-color: #2a2a2a;
+}
+
+.book-cover img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.book-card:hover .book-cover img {
+  transform: scale(1.1);
+}
+
+.book-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-card:hover .book-overlay {
+  opacity: 1;
+}
+
+.overlay-content {
+  text-align: center;
+}
+
+.btn-read {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  padding: 9px 22px;
+  border-radius: 25px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-read:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.5);
+}
+
+.book-badge {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  background-color: rgba(102, 126, 234, 0.9);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 600;
+  backdrop-filter: blur(5px);
+}
+
+.book-info {
+  padding: 13px;
+}
+
+.book-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.3;
+}
+
+.book-author {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.book-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+
+.category-tag {
+  font-size: 10px;
+  padding: 3px 8px;
+  background: rgba(102, 126, 234, 0.15);
+  color: #667eea;
+  border-radius: 10px;
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  white-space: nowrap;
+}
+
+.book-stats {
+  font-size: 12px;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.views {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
