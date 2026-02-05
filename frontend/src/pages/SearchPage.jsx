@@ -15,6 +15,8 @@ const SearchPage = () => {
   });
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const resultsPerPage = 12;
   const resultsRef = useRef(null);
 
   useEffect(() => {
@@ -87,6 +89,7 @@ const SearchPage = () => {
       }
 
       setSearchResults(results);
+      setCurrentPage(1); // Reset về trang 1
       
       // Scroll to results section after search completes
       if (resultsRef.current) {
@@ -234,16 +237,49 @@ const SearchPage = () => {
               {loading ? (
                 <div className="loading">Đang tải...</div>
               ) : searchResults.length > 0 ? (
-                searchResults.map(book => (
-                  <BookCard 
-                    key={book.id} 
-                    book={book}
-                  />
-                ))
+                searchResults
+                  .slice((currentPage - 1) * resultsPerPage, currentPage * resultsPerPage)
+                  .map(book => (
+                    <BookCard 
+                      key={book.id} 
+                      book={book}
+                    />
+                  ))
               ) : (
                 <div className="no-results">Không tìm thấy kết quả nào</div>
               )}
             </div>
+
+            {/* Pagination */}
+            {!loading && searchResults.length > resultsPerPage && (
+              <div className="pagination">
+                <button 
+                  className="btn-page" 
+                  onClick={() => {
+                    setCurrentPage(prev => Math.max(1, prev - 1));
+                    resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                  disabled={currentPage === 1}
+                >
+                  ← Trước
+                </button>
+                
+                <span className="page-info">
+                  Trang {currentPage} / {Math.ceil(searchResults.length / resultsPerPage)}
+                </span>
+                
+                <button 
+                  className="btn-page" 
+                  onClick={() => {
+                    setCurrentPage(prev => Math.min(Math.ceil(searchResults.length / resultsPerPage), prev + 1));
+                    resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                  disabled={currentPage >= Math.ceil(searchResults.length / resultsPerPage)}
+                >
+                  Sau →
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

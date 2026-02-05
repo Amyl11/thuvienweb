@@ -15,7 +15,8 @@ const HomePage = () => {
   const fetchBooks = async () => {
     try {
       const response = await bookAPI.getAllBooks();
-      setBooks(response.data);
+      // Giới hạn tối đa 24 sách trên trang chủ
+      setBooks(response.data.slice(0, 24));
     } catch (error) {
       console.error('Error fetching books:', error);
       setBooks([]);
