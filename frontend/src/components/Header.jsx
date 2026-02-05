@@ -34,18 +34,6 @@ const Header = () => {
               <h1>THƯ VIỆN</h1>
               <p>Đọc Truyện Online</p>
             </div>
-            
-            <div className="header-actions">
-              <button className="btn-history">
-                <i className="icon">📚</i> Lịch sử
-              </button>
-              <button className="btn-favorite">
-                <i className="icon">❤️</i> Yêu thích
-              </button>
-              <button className="btn-bookmark">
-                <i className="icon">📑</i> Bookmark
-              </button>
-            </div>
           </div>
         </div>
       </div>

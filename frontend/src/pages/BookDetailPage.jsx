@@ -13,8 +13,6 @@ const BookDetailPage = () => {
 
   useEffect(() => {
     fetchBookDetail();
-    // Increment view count
-    bookAPI.incrementViews(id).catch(err => console.error('Error incrementing views:', err));
   }, [id]);
 
   const fetchBookDetail = async () => {
@@ -106,7 +104,10 @@ const BookDetailPage = () => {
                 <>
                   <button 
                     className="btn-read-large"
-                    onClick={() => navigate(`/doc/${book.id}`)}
+                    onClick={() => {
+                      bookAPI.incrementViews(id).catch(err => console.error('Error incrementing views:', err));
+                      navigate(`/doc/${book.id}`);
+                    }}
                   >
                     📖 Đọc Truyện
                   </button>
