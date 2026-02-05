@@ -1,1 +1,1 @@
-web: java -jar target/thuvien-backend-1.0.0.jar
+web: chmod +x mvnw && java -jar target/thuvien-backend-1.0.0.jar
