@@ -267,6 +267,9 @@
   text-align: center;
   flex-shrink: 0;
   align-self: center;
+  width: fit-content;
+  height: fit-content;
+  min-height: auto;
 }
 
 .message.success {
