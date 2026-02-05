@@ -75,7 +75,8 @@ const AddBookPage = () => {
         xhr.upload.addEventListener('progress', (e) => {
           if (e.lengthComputable) {
             const percentComplete = Math.round((e.loaded / e.total) * 100);
-            setUploadProgress(percentComplete);
+            // Cap at 99% until server processing is complete
+            setUploadProgress(Math.min(percentComplete, 99));
           }
         });
 
