@@ -102,35 +102,39 @@ public class BookService {
                 }
                 
                 // Generate thumbnail and upload to Drive
-                // Skip thumbnail for large files (> 25MB) to avoid memory issues
-                if (pdfFile.getSize() > 25 * 1024 * 1024) {
-                    System.out.println("File size > 25MB, skipping thumbnail generation");
-                    thumbnailPath = "NULL";
-                } else {
-                    Path tempPdfPath = Files.createTempFile("temp-pdf-", ".pdf");
-                    Files.copy(pdfFile.getInputStream(), tempPdfPath, StandardCopyOption.REPLACE_EXISTING);
-                    
-                    try {
-                        if (useOAuth) {
-                            thumbnailPath = thumbnailService.generateThumbnailToDrive(
-                                tempPdfPath.toString(), 
-                                sanitizedName + "_" + timestamp + "_thumb.jpg",
-                                googleDriveOAuthService
-                            );
-                        } else {
-                            thumbnailPath = thumbnailService.generateThumbnailToDrive(
-                                tempPdfPath.toString(), 
-                                sanitizedName + "_" + timestamp + "_thumb.jpg",
-                                googleDriveService
-                            );
-                        }
-                    } catch (Exception e) {
-                        System.err.println("Failed to generate thumbnail: " + e.getMessage());
-                        thumbnailPath = "NULL";
-                    } finally {
-                        // Clean up temp file
-                        Files.deleteIfExists(tempPdfPath);
+                // Use low quality (72 DPI) for files > 25MB to reduce memory usage
+                boolean useLowQuality = pdfFile.getSize() > 25 * 1024 * 1024;
+                
+                Path tempPdfPath = Files.createTempFile("temp-pdf-", ".pdf");
+                Files.copy(pdfFile.getInputStream(), tempPdfPath, StandardCopyOption.REPLACE_EXISTING);
+                
+                try {
+                    if (useOAuth) {
+                        thumbnailPath = thumbnailService.generateThumbnailToDrive(
+                            tempPdfPath.toString(), 
+                            sanitizedName + "_" + timestamp + "_thumb.jpg",
+                            googleDriveOAuthService,
+                            useLowQuality
+                        );
+                    } else {
+                        thumbnailPath = thumbnailService.generateThumbnailToDrive(
+                            tempPdfPath.toString(), 
+                            sanitizedName + "_" + timestamp + "_thumb.jpg",
+                            googleDriveService,
+                            useLowQuality
+                        );
                     }
+                    
+                    // If thumbnail generation failed, set to NULL
+                    if (thumbnailPath == null) {
+                        thumbnailPath = "NULL";
+                    }
+                } catch (Exception e) {
+                    System.err.println("Failed to generate thumbnail: " + e.getMessage());
+                    thumbnailPath = "NULL";
+                } finally {
+                    // Clean up temp file
+                    Files.deleteIfExists(tempPdfPath);
                 }
             } else {
                 // Save to local directory

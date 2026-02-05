@@ -2,6 +2,7 @@ package com.thuvien.service;
 
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,8 +34,9 @@ public class ThumbnailService {
 
     /**
      * Generate thumbnail from PDF and upload to Google Drive (OAuth version)
+     * @param useLowQuality Use lower DPI for large files to reduce memory usage
      */
-    public String generateThumbnailToDrive(String pdfPath, String thumbnailFileName, GoogleDriveOAuthService driveService) {
+    public String generateThumbnailToDrive(String pdfPath, String thumbnailFileName, GoogleDriveOAuthService driveService, boolean useLowQuality) {
         if (pdfPath == null || pdfPath.trim().isEmpty()) {
             return null;
         }
@@ -50,16 +53,30 @@ public class ThumbnailService {
                 return null;
             }
 
-            // Render first page
+            // Only load and render the first page to save memory
             PDFRenderer renderer = new PDFRenderer(document);
-            BufferedImage image = renderer.renderImageWithDPI(0, DPI);
-
+            float dpi = useLowQuality ? 72 : DPI;
+            
+            // Render only page 0 (first page)
+            BufferedImage image = renderer.renderImageWithDPI(0, dpi);
+            
             // Resize to thumbnail size
             BufferedImage thumbnail = resizeImage(image, THUMBNAIL_WIDTH);
+            
+            // Release image memory
+            image.flush();
+            
+            // Force garbage collection for large files
+            if (useLowQuality) {
+                System.gc();
+            }
 
             // Save to temp file
             Path tempThumb = Files.createTempFile("thumb-", ".jpg");
             ImageIO.write(thumbnail, "jpg", tempThumb.toFile());
+            
+            // Release thumbnail memory
+            thumbnail.flush();
 
             // Upload to Google Drive
             String driveUrl = driveService.uploadFile(tempThumb.toFile(), thumbnailFileName);
@@ -78,8 +95,9 @@ public class ThumbnailService {
 
     /**
      * Generate thumbnail from PDF and upload to Google Drive
+     * @param useLowQuality Use lower DPI for large files to reduce memory usage
      */
-    public String generateThumbnailToDrive(String pdfPath, String thumbnailFileName, GoogleDriveService driveService) {
+    public String generateThumbnailToDrive(String pdfPath, String thumbnailFileName, GoogleDriveService driveService, boolean useLowQuality) {
         if (pdfPath == null || pdfPath.trim().isEmpty()) {
             return null;
         }
@@ -96,16 +114,30 @@ public class ThumbnailService {
                 return null;
             }
 
-            // Render first page
+            // Only load and render the first page to save memory
             PDFRenderer renderer = new PDFRenderer(document);
-            BufferedImage image = renderer.renderImageWithDPI(0, DPI);
-
+            float dpi = useLowQuality ? 72 : DPI;
+            
+            // Render only page 0 (first page)
+            BufferedImage image = renderer.renderImageWithDPI(0, dpi);
+            
             // Resize to thumbnail size
             BufferedImage thumbnail = resizeImage(image, THUMBNAIL_WIDTH);
+            
+            // Release image memory
+            image.flush();
+            
+            // Force garbage collection for large files
+            if (useLowQuality) {
+                System.gc();
+            }
 
             // Save to temp file
             Path tempThumb = Files.createTempFile("thumb-", ".jpg");
             ImageIO.write(thumbnail, "jpg", tempThumb.toFile());
+            
+            // Release thumbnail memory
+            thumbnail.flush();
 
             // Upload to Google Drive
             String driveUrl = driveService.uploadFile(tempThumb.toFile(), thumbnailFileName);
