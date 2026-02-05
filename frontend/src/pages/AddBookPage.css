@@ -258,18 +258,20 @@
 }
 
 .message {
-  padding: 8px 16px;
+  padding: 8px 16px !important;
   border-radius: 6px;
   font-size: 14px;
   font-weight: 500;
   max-width: 320px;
-  margin: 10px auto;
+  margin: 10px auto !important;
   text-align: center;
-  flex-shrink: 0;
-  align-self: center;
-  width: fit-content;
-  height: fit-content;
-  min-height: auto;
+  flex-shrink: 0 !important;
+  align-self: center !important;
+  width: fit-content !important;
+  height: fit-content !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  display: block !important;
 }
 
 .message.success {
