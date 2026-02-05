@@ -34,9 +34,8 @@ public class ThumbnailService {
 
     /**
      * Generate thumbnail from PDF and upload to Google Drive (OAuth version)
-     * @param useLowQuality Use lower DPI for large files to reduce memory usage
      */
-    public String generateThumbnailToDrive(String pdfPath, String thumbnailFileName, GoogleDriveOAuthService driveService, boolean useLowQuality) {
+    public String generateThumbnailToDrive(String pdfPath, String thumbnailFileName, GoogleDriveOAuthService driveService) {
         if (pdfPath == null || pdfPath.trim().isEmpty()) {
             return null;
         }
@@ -53,23 +52,15 @@ public class ThumbnailService {
                 return null;
             }
 
-            // Only load and render the first page to save memory
+            // Render first page
             PDFRenderer renderer = new PDFRenderer(document);
-            float dpi = useLowQuality ? 72 : DPI;
-            
-            // Render only page 0 (first page)
-            BufferedImage image = renderer.renderImageWithDPI(0, dpi);
+            BufferedImage image = renderer.renderImageWithDPI(0, DPI);
             
             // Resize to thumbnail size
             BufferedImage thumbnail = resizeImage(image, THUMBNAIL_WIDTH);
             
             // Release image memory
             image.flush();
-            
-            // Force garbage collection for large files
-            if (useLowQuality) {
-                System.gc();
-            }
 
             // Save to temp file
             Path tempThumb = Files.createTempFile("thumb-", ".jpg");
@@ -95,9 +86,8 @@ public class ThumbnailService {
 
     /**
      * Generate thumbnail from PDF and upload to Google Drive
-     * @param useLowQuality Use lower DPI for large files to reduce memory usage
      */
-    public String generateThumbnailToDrive(String pdfPath, String thumbnailFileName, GoogleDriveService driveService, boolean useLowQuality) {
+    public String generateThumbnailToDrive(String pdfPath, String thumbnailFileName, GoogleDriveService driveService) {
         if (pdfPath == null || pdfPath.trim().isEmpty()) {
             return null;
         }
@@ -114,23 +104,15 @@ public class ThumbnailService {
                 return null;
             }
 
-            // Only load and render the first page to save memory
+            // Render first page
             PDFRenderer renderer = new PDFRenderer(document);
-            float dpi = useLowQuality ? 72 : DPI;
-            
-            // Render only page 0 (first page)
-            BufferedImage image = renderer.renderImageWithDPI(0, dpi);
+            BufferedImage image = renderer.renderImageWithDPI(0, DPI);
             
             // Resize to thumbnail size
             BufferedImage thumbnail = resizeImage(image, THUMBNAIL_WIDTH);
             
             // Release image memory
             image.flush();
-            
-            // Force garbage collection for large files
-            if (useLowQuality) {
-                System.gc();
-            }
 
             // Save to temp file
             Path tempThumb = Files.createTempFile("thumb-", ".jpg");

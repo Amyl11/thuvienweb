@@ -265,6 +265,8 @@
   max-width: 320px;
   margin: 10px auto;
   text-align: center;
+  flex-shrink: 0;
+  align-self: center;
 }
 
 .message.success {
