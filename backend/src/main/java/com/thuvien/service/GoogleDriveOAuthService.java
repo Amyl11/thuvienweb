@@ -23,9 +23,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,16 +51,48 @@ public class GoogleDriveOAuthService {
      * Creates an authorized Credential object using OAuth 2.0
      */
     private Credential getCredentials(HttpTransport httpTransport) throws IOException {
-        // Load client secrets
+        // Load client secrets from environment variable or file
         GoogleClientSecrets clientSecrets;
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(oauthCredentialsPath))) {
-            clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, reader);
+        
+        String credentialsBase64 = System.getenv("GOOGLE_CREDENTIALS_BASE64");
+        
+        if (credentialsBase64 != null && !credentialsBase64.isEmpty()) {
+            // Decode base64 credentials from environment variable
+            byte[] decodedBytes = Base64.getDecoder().decode(credentialsBase64);
+            String credentialsJson = new String(decodedBytes, StandardCharsets.UTF_8);
+            clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, 
+                new InputStreamReader(new java.io.ByteArrayInputStream(credentialsJson.getBytes(StandardCharsets.UTF_8))));
+        } else {
+            // Load from file (local development)
+            try (InputStreamReader reader = new InputStreamReader(new FileInputStream(oauthCredentialsPath))) {
+                clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, reader);
+            }
+        }
+
+        // Create tokens directory if it doesn't exist
+        java.io.File tokensDir = new java.io.File(TOKENS_DIRECTORY_PATH);
+        if (!tokensDir.exists()) {
+            tokensDir.mkdirs();
+        }
+
+        // Restore stored credential from environment variable if available
+        String storedCredentialBase64 = System.getenv("GOOGLE_STORED_CREDENTIAL_BASE64");
+        if (storedCredentialBase64 != null && !storedCredentialBase64.isEmpty()) {
+            try {
+                byte[] decodedCredential = Base64.getDecoder().decode(storedCredentialBase64);
+                java.io.File storedCredFile = new java.io.File(TOKENS_DIRECTORY_PATH + "/StoredCredential");
+                try (FileOutputStream fos = new FileOutputStream(storedCredFile)) {
+                    fos.write(decodedCredential);
+                }
+            } catch (Exception e) {
+                System.err.println("Failed to restore stored credential from env var: " + e.getMessage());
+            }
         }
 
         // Build flow and trigger user authorization request
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 httpTransport, JSON_FACTORY, clientSecrets, SCOPES)
-                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
+                .setDataStoreFactory(new FileDataStoreFactory(tokensDir))
                 .setAccessType("offline")
                 .build();
         
