@@ -91,9 +91,6 @@ public class BookService {
             String thumbnailPath;
             
             if (googleDriveEnabled) {
-                // Choose OAuth or Service Account
-                Object driveService = useOAuth ? googleDriveOAuthService : googleDriveService;
-                
                 // Upload to Google Drive
                 if (useOAuth) {
                     bookPath = googleDriveOAuthService.uploadFile(pdfFile, filename);

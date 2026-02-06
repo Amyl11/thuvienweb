@@ -15,8 +15,8 @@ const HomePage = () => {
   const fetchBooks = async () => {
     try {
       const response = await bookAPI.getAllBooks();
-      // Giới hạn tối đa 24 sách trên trang chủ
-      setBooks(response.data.slice(0, 24));
+      // Lưu toàn bộ sách để TrendingSection có thể sort đúng
+      setBooks(response.data);
     } catch (error) {
       console.error('Error fetching books:', error);
       setBooks([]);
@@ -41,7 +41,8 @@ const HomePage = () => {
         <div className="content-wrapper">
           <div className="books-section">
             <div className="books-grid">
-              {books.map(book => (
+              {/* Hiển thị tối đa 24 sách trên trang chủ */}
+              {books.slice(0, 24).map(book => (
                 <BookCard 
                   key={book.id} 
                   book={book}
@@ -50,6 +51,7 @@ const HomePage = () => {
             </div>
           </div>
 
+          {/* TrendingSection nhận toàn bộ sách để sort đúng */}
           <TrendingSection books={books} />
         </div>
       </div>
