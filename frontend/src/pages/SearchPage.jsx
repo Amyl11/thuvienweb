@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import BookCard from '../components/BookCard';
+import Pagination from '../components/Pagination';
 import { bookAPI } from '../services/api';
 import { CATEGORIES, AUTHORS } from '../constants/categories';
 import './SearchPage.css';
@@ -252,33 +253,12 @@ const SearchPage = () => {
 
             {/* Pagination */}
             {!loading && searchResults.length > resultsPerPage && (
-              <div className="pagination">
-                <button 
-                  className="btn-page" 
-                  onClick={() => {
-                    setCurrentPage(prev => Math.max(1, prev - 1));
-                    resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  }}
-                  disabled={currentPage === 1}
-                >
-                  ← Trước
-                </button>
-                
-                <span className="page-info">
-                  Trang {currentPage} / {Math.ceil(searchResults.length / resultsPerPage)}
-                </span>
-                
-                <button 
-                  className="btn-page" 
-                  onClick={() => {
-                    setCurrentPage(prev => Math.min(Math.ceil(searchResults.length / resultsPerPage), prev + 1));
-                    resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  }}
-                  disabled={currentPage >= Math.ceil(searchResults.length / resultsPerPage)}
-                >
-                  Sau →
-                </button>
-              </div>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(searchResults.length / resultsPerPage)}
+                onPageChange={setCurrentPage}
+                scrollRef={resultsRef}
+              />
             )}
           </div>
         </div>
